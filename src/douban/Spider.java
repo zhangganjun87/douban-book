@@ -21,7 +21,7 @@ public class Spider {
 	private String bookType = "";
 	private String page = "?start=";
 	private int pageNumber = 0;
-	String title[] = { "ĞòºÅ", "ÊéÃû", "ÆÀ·Ö", "ÆÀ¼ÛÈËÊı", "×÷Õß", "³ö°æÉç", "³ö°æÈÕÆÚ", "¼Û¸ñ" };
+	String title[] = { "åºå·", "ä¹¦å", "è¯„åˆ†", "è¯„ä»·äººæ•°", "ä½œè€…", "å‡ºç‰ˆç¤¾", "å‡ºç‰ˆæ—¥æœŸ", "ä»·æ ¼" };
 	Map<String, String> map = new HashMap<String, String>();
 	static List<String> excelList = new ArrayList<String>();
 	public static int rowId = 0;
@@ -38,13 +38,13 @@ public class Spider {
 	}
 
 	public void createExcel(String fileDir, String sheetName, String titleRow[]) throws Exception {
-		// ´´½¨workbook
+		// åˆ›å»ºworkbook
 		workbook = new HSSFWorkbook();
-		// Ìí¼Óworksheet
-		HSSFSheet sheet1 = workbook.createSheet("¶¹°êÍ¼Êé");
+		// æ·»åŠ worksheet
+		HSSFSheet sheet1 = workbook.createSheet("è±†ç“£å›¾ä¹¦");
 		FileOutputStream out = null;
 		try {
-			HSSFRow row = workbook.getSheet("¶¹°êÍ¼Êé").createRow(0); // ´´½¨µÚÒ»ĞĞ
+			HSSFRow row = workbook.getSheet("è±†ç“£å›¾ä¹¦").createRow(0); // åˆ›å»ºç¬¬ä¸€è¡Œ
 			for (int i = 0; i < titleRow.length; i++) {
 				HSSFCell cell = row.createCell(i);
 				cell.setCellValue(titleRow[i]);
@@ -73,13 +73,13 @@ public class Spider {
 			e4.printStackTrace();
 		}
 		FileOutputStream out = null;
-		HSSFSheet sheet = workbook.getSheet("¶¹°êÍ¼Êé");
-		// »ñÈ¡±íÍ·ÁĞÊı
+		HSSFSheet sheet = workbook.getSheet("è±†ç“£å›¾ä¹¦");
+		// è·å–è¡¨å¤´åˆ—æ•°
 		int columnCount = sheet.getRow(0).getLastCellNum() + 1;
 		try {
 			HSSFRow titleRow = sheet.getRow(0);
 			if (titleRow != null) {
-				// ´´½¨ĞÂµÄĞĞ
+				// åˆ›å»ºæ–°çš„è¡Œ
 				HSSFRow newRow = sheet.createRow(rowId);
 				for (int columnIndex = 0; columnIndex < columnCount - 1; columnIndex++) {
 					String mapKey = titleRow.getCell(columnIndex).toString().trim();
@@ -89,7 +89,7 @@ public class Spider {
 			}
 			out = new FileOutputStream(fileDir);
 			workbook.write(out);
-			System.out.println("ÕıÔÚ¼ÇÂ¼µÚ" + rowId + "±¾ÊéµÄĞÅÏ¢...");
+			System.out.println("æ­£åœ¨è®°å½•ç¬¬" + rowId + "æœ¬ä¹¦çš„ä¿¡æ¯...");
 		} catch (Exception e5) {
 			throw e5;
 		} finally {
@@ -103,7 +103,7 @@ public class Spider {
 
 	public int getWebbookInfo() {
 		try {
-			// ´ÓµÚÒ»Ò³¿ªÊ¼×¥È¡£¬Ã¿20±¾ÊéÎªÒ»Ò³
+			// ä»ç¬¬ä¸€é¡µå¼€å§‹æŠ“å–ï¼Œæ¯20æœ¬ä¹¦ä¸ºä¸€é¡µ
 			for (pageNumber = 0; pageNumber < 20 * 100; pageNumber += 20) {
 				Document doc = Jsoup.connect(url + bookType + page + pageNumber).data("query", "Java")
 						.userAgent(
@@ -123,23 +123,23 @@ public class Spider {
 							price = element.getElementsByClass("pub").text().split("/")[len - 1];
 						} else {
 							writer = element.getElementsByClass("pub").text().split("/")[0];
-							publition = "Î´Öª";
-							date = "Î´Öª";
-							price = "Î´Öª";
-							System.out.println("µÚ" + rowId + "±¾ÊéĞÅÏ¢²»È«");
+							publition = "æœªçŸ¥";
+							date = "æœªçŸ¥";
+							price = "æœªçŸ¥";
+							System.out.println("ç¬¬" + rowId + "æœ¬ä¹¦ä¿¡æ¯ä¸å…¨");
 						}
 						rowId++;
 
-						map.put("ĞòºÅ", rowId + "");
-						map.put("ÊéÃû", title);
-						map.put("ÆÀ·Ö", rate);
-						map.put("ÆÀ¼ÛÈËÊı", peoplenum);
-						map.put("×÷Õß", writer);
-						map.put("³ö°æÉç", publition);
-						map.put("³ö°æÈÕÆÚ", date);
-						map.put("¼Û¸ñ", price);
+						map.put("åºå·", rowId + "");
+						map.put("ä¹¦å", title);
+						map.put("è¯„åˆ†", rate);
+						map.put("è¯„ä»·äººæ•°", peoplenum);
+						map.put("ä½œè€…", writer);
+						map.put("å‡ºç‰ˆç¤¾", publition);
+						map.put("å‡ºç‰ˆæ—¥æœŸ", date);
+						map.put("ä»·æ ¼", price);
 						try {
-							writeToExcel("D:/test.xls", "¶¹°êÍ¼Êé", map);
+							writeToExcel("D:/test.xls", "è±†ç“£å›¾ä¹¦", map);
 						} catch (Exception e8) {
 							e8.printStackTrace();
 						}
@@ -156,7 +156,7 @@ public class Spider {
 	}
 
 	public void getFirstHunderedBooks(String fileDir, String sheetName, List<String> excelList2) {
-		// Ö»ÊµÏÖÁËÔÚexcelÖĞÕÒµ½ÆÀ¼ÛÊı´óÓÚ1000µÄÊé£¬²¢´æÈëµ½list£¬ÔÚÖÕ¶Ë´òÓ¡³öÀ´¡£²¢Î´ÊµÏÖÆÀ·ÖµÄÅÅĞò¡£
+		// åªå®ç°äº†åœ¨excelä¸­æ‰¾åˆ°è¯„ä»·æ•°å¤§äº1000çš„ä¹¦ï¼Œå¹¶å­˜å…¥åˆ°listï¼Œåœ¨ç»ˆç«¯æ‰“å°å‡ºæ¥ã€‚å¹¶æœªå®ç°è¯„åˆ†çš„æ’åºã€‚
 		File file = new File(fileDir);
 		try {
 			workbook = new HSSFWorkbook(new FileInputStream(file));
@@ -165,11 +165,11 @@ public class Spider {
 		} catch (IOException e4) {
 			e4.printStackTrace();
 		}
-		HSSFSheet sheet = workbook.getSheet("¶¹°êÍ¼Êé");
-		// »ñÈ¡ĞĞÊı
+		HSSFSheet sheet = workbook.getSheet("è±†ç“£å›¾ä¹¦");
+		// è·å–è¡Œæ•°
 		int rowCount = sheet.getLastRowNum();
 		try {
-			String regPattern = "\\((\\d+)ÈËÆÀ¼Û\\)";
+			String regPattern = "\\((\\d+)äººè¯„ä»·\\)";
 			Pattern pattern = Pattern.compile(regPattern);
 			for (int rowNum = 1; rowNum < rowCount - 1; rowNum++) {
 				HSSFRow row = sheet.getRow(rowNum);
@@ -195,29 +195,25 @@ public class Spider {
 	}
 
 	public static void main(String[] args) {
-		//ÓÉÓÚÔÚÌí¼Ó¶àÏß³ÌÍ¬²½ºó³öÏÖÁËÒ»Ğ©ÎÊÌâ£¬Ã»ÓĞµ÷ÊÔ³É¹¦£¬ËùÒÔÃ»ÓĞÌí¼Ó¶àÏß³Ì
-		Spider sp = new Spider("»¥ÁªÍø");
-		Spider sp2 = new Spider("±à³Ì");
-		Spider sp3 = new Spider("Ëã·¨");
+		//ç”±äºåœ¨æ·»åŠ å¤šçº¿ç¨‹åŒæ­¥åå‡ºç°äº†ä¸€äº›é—®é¢˜ï¼Œæ²¡æœ‰è°ƒè¯•æˆåŠŸï¼Œæ‰€ä»¥æ²¡æœ‰æ·»åŠ å¤šçº¿ç¨‹
+		Spider sp = new Spider("äº’è”ç½‘");
+		Spider sp2 = new Spider("ç¼–ç¨‹");
+		Spider sp3 = new Spider("ç®—æ³•");
 		// Thread t1 = new Thread(sp);
 		// Thread t2 = new Thread(sp2);
 		// Thread t3 = new Thread(sp3);
 		try {
-			sp.createExcel("D:/test.xls", "¶¹°êÍ¼Êé", sp.title);
+			sp.createExcel("D:/test.xls", "è±†ç“£å›¾ä¹¦", sp.title);
 		} catch (Exception e9) {
 			e9.printStackTrace();
 		}
 		rowId = sp.getWebbookInfo();
 		rowId = sp2.getWebbookInfo();
 		rowId = sp3.getWebbookInfo();
-		System.out.println("ÅÀÈ¡ĞÅÏ¢Íê±Ï");
-		System.out.println("ÕıÔÚ´òÓ¡ÆÀ¼Û¸ßÓÚ1000µÄÊé");
-		sp.getFirstHunderedBooks("D:/test.xls", "¶¹°êÍ¼Êé", excelList);
+		System.out.println("çˆ¬å–ä¿¡æ¯å®Œæ¯•");
+		System.out.println("æ­£åœ¨æ‰“å°è¯„ä»·é«˜äº1000çš„ä¹¦");
+		sp.getFirstHunderedBooks("D:/test.xls", "è±†ç“£å›¾ä¹¦", excelList);
 
 	}
 
-	// @Override
-	// public synchronized void run() {
-	// getWebbookInfo();
-	// }
 }
